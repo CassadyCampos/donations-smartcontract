@@ -10,8 +10,13 @@ contract Donation {
         owner = msg.sender;
     }
 
+
+    function fetchOwner() view public returns (address) {
+        return owner;
+    }
+    
     function makeDonation() public payable returns (bool) {
-        require(msg.value > 0, "Cannot donate 0");
+        require(msg.value > 0, "Donation Error: Can't Donate 0!");
         donations[msg.sender] += msg.value;
 
         return true; 

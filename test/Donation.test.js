@@ -17,4 +17,18 @@ contract("Donation", async accounts => {
         const donationAmount = await donation.donations(userAccountOne)
         assert.equal(donationAmount, amount);
     })
+
+    it("can fetch owner", async () => {
+        const ownerAddress = await donation.fetchOwner();
+        assert.equal(ownerAddress, contractOwner);
+    })
+
+    it("should require donation amount", async () => {
+        try {
+            await donation.makeDonation({ value: 0, from: userAccountOne })
+        }
+        catch (e) {
+            assert.include(e.message, "Donation Error: Can't Donate 0!");
+        }
+    })
 })
