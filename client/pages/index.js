@@ -5,6 +5,11 @@ import { ethers } from 'ethers';
 // 1) Allow owner of contract to see that they are the owner
 // 2) Allow a non-owner to make a donation through UI 
 
+// donation contract needs updating on every 'truffle migrate --reset'
+const DonationContract = '0x42A0275a2ECd62D53FfC73Cc2b1fDD540e5D8219';
+const emptyAddress = '0x0000000000000000000000000000000000000000';
+
+
 export default function IndexPage() {
     const [account, setAccount] = useState('');
     const [isOwner, setIsOwner] = useState('');
@@ -23,7 +28,7 @@ export default function IndexPage() {
 
     async function fetchOwner() {
         if (typeof window.ethereum !== 'undefined') {
-            const contract = await intializeProvider();
+            const contract = await initializeProvider();
             try {
                 const owner = await contract.getOwner();
                 setIsOwner(owner.toLowerCase() === account); 
@@ -38,6 +43,12 @@ export default function IndexPage() {
     useEffect(() => {
         requestAccount();
     }, []);
+    // if connected perform side effects
+    useEffect(() => {
+        if (account) {
+            fetchOwner();
+        }
+    })
 
     return (
         <div>
