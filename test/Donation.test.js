@@ -18,6 +18,15 @@ contract("Donation", async accounts => {
         assert.equal(donationAmount, amount);
     })
 
+    it("should not allow owner donation", async () => {
+        try {
+            await donation.makeDonation({ value: amount, from: contractOwner })
+        }
+        catch (e) {
+            assert.include(e.message, "Donation Error: Owner of donation cannot use same address to donate!")
+        }
+    })
+
     it("can fetch owner", async () => {
         const ownerAddress = await donation.fetchOwner();
         assert.equal(ownerAddress, contractOwner);
@@ -28,7 +37,7 @@ contract("Donation", async accounts => {
             await donation.makeDonation({ value: 0, from: userAccountOne })
         }
         catch (e) {
-            assert.include(e.message, "Donation Error: Can't Donate 0!");
+            assert.include(e.message, "Donation Error: Can't Donate 0!")
         }
     })
 })
