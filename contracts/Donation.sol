@@ -6,6 +6,10 @@ contract Donation {
     mapping(address => uint) public donations;
     uint totalDonations;
 
+    // events
+    event LogDonation(address indexed _donator, uint256 _donationAmount);
+    event LogWithdrawal(address indexed _withdrawer, uint256 amount);
+
     constructor() {
         owner = msg.sender;
     }
@@ -20,6 +24,7 @@ contract Donation {
         require(msg.sender != owner, "Donation Error: Owner of donation cannot use same address to donate!");
         donations[msg.sender] += msg.value;
 
+        emit LogDonation(msg.sender, donations[msg.sender]);
         return true; 
     }
 
