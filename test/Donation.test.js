@@ -67,7 +67,25 @@ contract("Donation", async accounts => {
         await donation.makeDonation({ value: amount, from: userAccountOne })
 
         await donation.makeWithdrawal({from: contractOwner});
+        
+        const contractOwnerBalance = await web3.eth.getBalance(contractOwner);
 
+        // hard to exactly determine the final withdrawal amount due to potential gas fees
+        assert.isAbove(parseInt(contractOwnerBalance), parseInt(contractOwnerBalanceBefore), 'Contract owners balance now is greater than it was before');
+    })
+
+    it("clears donators donation amount after withdraw", async () => {
+        const contractOwnerBalanceBefore = await web3.eth.getBalance(contractOwner);
+
+        await donation.makeDonation({ value: amount, from: userAccountOne })
+
+        await donation.makeWithdrawal({from: contractOwner});
+        
+        let accountOneDonation = await donation.donations(userAccountOne);
+        accountOneDonation = parseInt(accountOneDonation);
+
+
+        assert.equal(0, accountOneDonation);
         const contractOwnerBalance = await web3.eth.getBalance(contractOwner);
 
         // hard to exactly determine the final withdrawal amount due to potential gas fees

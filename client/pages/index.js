@@ -7,10 +7,10 @@ import Donation from '../etherjs/artifacts/Donation.json'
 // 2) Allow a non-owner to make a donation through UI 
 
 // donation contract needs updating on every 'truffle migrate --reset'
-const DonationContractAddress = '0x5F3E9620ad4eF76d07b34afdBA8dfE0ef3331331';
+const DonationContractAddress = '0x720EABA1aeBAba3015eFb4F67D1b670edE5DbD06';
 const emptyAddress = '0x0000000000000000000000000000000000000000';
 
-
+ 
 export default function IndexPage() {
     const [account, setAccount] = useState('');
     const [amount, setAmount] = useState(0);
@@ -71,7 +71,7 @@ export default function IndexPage() {
 
             try {
                 // convert ether to wei
-                await contract.Withdraw();
+                await contract.makeWithdrawal({ from : account});
             }
             catch(e) {
                 console.log('Error making withdrawal: ', e);
