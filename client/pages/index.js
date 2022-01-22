@@ -7,7 +7,7 @@ import Donation from '../etherjs/artifacts/Donation.json'
 // 2) Allow a non-owner to make a donation through UI 
 
 // donation contract needs updating on every 'truffle migrate --reset'
-const DonationContractAddress = '0x720EABA1aeBAba3015eFb4F67D1b670edE5DbD06';
+const DonationContractAddress = '0x20995d1d5d16e3d76E967FD9bD39B1DfD0746298';
 const emptyAddress = '0x0000000000000000000000000000000000000000';
 
  
@@ -36,6 +36,7 @@ export default function IndexPage() {
             try {
                 const myDonation = await contract.donations(account);
                 setMyDonation(parseFloat(formatEther(myDonation.toString())));
+                console.log("Your donation: ", parseFloat(formatEther(myDonation.toString())));
             }
             catch (e) {
                 console.log('Error fetching your donation: ', e);
